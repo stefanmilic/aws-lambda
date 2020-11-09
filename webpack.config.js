@@ -1,10 +1,11 @@
-const slsw = require("serverless-webpack");
-const nodeExternals = require("webpack-node-externals");
+const slsw = require('serverless-webpack');
+const nodeExternals = require('webpack-node-externals');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: slsw.lib.entries,
-  target: "node",
+  target: 'node',
+  mode: 'none',
   // Since 'aws-sdk' is not compatible with webpack,
   // we exclude all node dependencies
   externals: [nodeExternals()],
@@ -13,17 +14,17 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         include: __dirname,
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   plugins: [
     new CopyWebpackPlugin([
       { copyPermissions: true, from: '.next/**' },
       { copyPermissions: true, from: 'pages/**' },
-      { copyPermissions: true, from: 'package.json' }
-    ])
-  ]
+      { copyPermissions: true, from: 'package.json' },
+    ]),
+  ],
 };
