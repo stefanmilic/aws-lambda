@@ -1,0 +1,23 @@
+image: lambci/lambda:build-nodejs12.x
+
+pipelines:
+  branches:      
+     dev:
+        - step:
+           name: Deploy to TEST
+           deployment: test
+           services:
+             - docker
+           caches:
+             - node
+             - docker
+           script:
+             - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+             - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+             - git remote set-url origin ${BITBUCKET_GIT_HTTP_ORIGIN}
+             - npm i serverless -g
+             - rm -rf .next
+             - npm install
+             - npm run build
+             - sls deploy -v --stage dev
+             - git push

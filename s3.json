@@ -1,0 +1,4 @@
+{
+  "S3Bucket": "nextjs-serverless-assets",
+  "S3Key": "dependencies-package.zip"
+}

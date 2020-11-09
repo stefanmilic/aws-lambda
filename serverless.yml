@@ -1,0 +1,43 @@
+service: nextjs
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-apigw-binary
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+
+  environment:
+    NODE_ENV: production
+    LAMBDA: true
+    STAGE: ${self:provider.stage}
+
+functions:
+  index:
+    handler: index.handler
+    events:
+      - http: ANY /
+      - http: ANY /{proxy+}
+      - cors: true
+    layers:
+      - arn:aws:lambda:eu-west-1:147545814489:layer:dependencies-layer:10
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    keepOutputDirectory: false
+    includeModules: false
+    packager: 'npm'
+    excludeFiles:
+      - .serverless
+      - .webpack
+      - .dynamodb
+
+  apigwBinary:
+    types:
+      - '*/*'
+
+package:
+  individually: true
