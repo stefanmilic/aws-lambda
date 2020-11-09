@@ -7,7 +7,8 @@
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "deploy:layer": "./command.sh"
+    "deploy:layer": "./command.sh",
+    "deploy:sls": "sls deploy"
   },
   "keywords": [],
   "author": "",
